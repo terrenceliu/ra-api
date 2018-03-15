@@ -9,8 +9,24 @@
     <h1 id="ra-api">RA-API</h1>
     <p>A simple API for data querying.<br>The project is deployed and hosted on Heroku.</p>
     <h2 id="usage">Usage</h2>
-    <p>Main site: <code>https://ra-api.herokuapp.com/</code><br>Query Full Record By HID <code>GET
-        https://ra-api.herokuapp.com/api/query/hid/&lt;hid&gt;</code></p>
+    <p>Main site: <a href="https://ra-api.herokuapp.com/"><code>https://ra-api.herokuapp.com/</code></a>
+        Query Full Record By HID <code>GET https://ra-api.herokuapp.com/api/query/hid/&lt;hid&gt;</code><br>Query Parts
+        of Record By HID <code>POST https://ra-api.herokuapp.com/api/query</code></p>
+    <ul>
+        <li>Access by <code>curl</code></li>
+    </ul>
+    <pre><code><span class="hljs-comment"># Query Full Record By HID</span>
+curl -i https:<span class="hljs-regexp">//</span>ra-api.herokuapp.com<span class="hljs-regexp">/api/</span>query<span
+                class="hljs-regexp">/hid/</span><span class="hljs-number">3126</span>F2F5F8QR5N1OVUZEMNGHF0EPEO
+</code></pre>
+    <pre><code># Query Parts <span class="hljs-keyword">of</span> <span class="hljs-keyword">Record</span> By HID
+curl -H <span class="hljs-string">"Content-Type: application/json"</span> -d '{<span
+                class="hljs-string">"hid"</span>: <span
+                class="hljs-string">"3GV1I4SEO9CX1NTBXKN9TIFKTSQ6LN"</span>, <span class="hljs-string">"res_hid"</span>: <span
+                class="hljs-literal">true</span>, <span class="hljs-string">"res_content"</span>:<span
+                class="hljs-literal">true</span>, <span class="hljs-string">"res_has_space"</span>: <span
+                class="hljs-literal">true</span>}' https://ra-api.herokuapp.com/api/query
+</code></pre>
     <h2 id="api-specification">API Specification</h2>
     <h3 id="query-full-record-by-hid">Query Full Record By HID</h3>
     <p>Returns the full record with the given “hid”</p>
@@ -44,29 +60,111 @@
     <p><strong>Response Type</strong>: json</p>
     <p><strong>Response Content Example</strong> :</p>
     <pre><code class="lang-json">{
-      <span class="hljs-attr">"result"</span>: {
-            <span class="hljs-attr">"hid"</span>: <span class="hljs-string">"33BFF6QPI1YEFYISIWWDVQKGH8RW3Z"</span>,
-            <span class="hljs-attr">"content"</span>: <span class="hljs-string">"Landmark Center, 8th Fl"</span>,
-            <span class="hljs-attr">"has_space"</span>: <span class="hljs-literal">false</span>
-      }
-    }
-    </code></pre>
+  <span class="hljs-attr">"result"</span>: {
+        <span class="hljs-attr">"hid"</span>: <span class="hljs-string">"33BFF6QPI1YEFYISIWWDVQKGH8RW3Z"</span>,
+        <span class="hljs-attr">"content"</span>: <span class="hljs-string">"Landmark Center, 8th Fl"</span>,
+        <span class="hljs-attr">"has_space"</span>: <span class="hljs-literal">false</span>
+  }
+}
+</code></pre>
     <h4 id="failed-responses">Failed Responses</h4>
     <p><strong>Condition</strong>: Fail to find a record with the given HID.</p>
     <p><strong>Code</strong>: <code>404 Not Found</code></p>
     <p><strong>Response Type</strong>: json
         <strong>Response Content Example</strong> :</p>
     <pre><code class="lang-json">{
-      <span class="hljs-attr">"message"</span>: <span class="hljs-string">"[Err] 404 Not Found."</span>,
-      <span class="hljs-attr">"status"</span>: <span class="hljs-number">404</span>
-    }
-    </code></pre>
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"[Err] 404 Not Found."</span>,
+  <span class="hljs-attr">"status"</span>: <span class="hljs-number">404</span>
+}
+</code></pre>
+    <h3 id="query-parts-of-record-by-hid">Query Parts of Record By HID</h3>
+    <p>Returns parts of record with the given “hid” and display parameters</p>
+    <p><strong>URL</strong> : <code>/api/query</code></p>
+    <p><strong>URL Parameters</strong>:</p>
+    <table>
+        <thead>
+        <tr>
+            <th style="text-align:left">Name</th>
+            <th style="text-align:left">Required</th>
+            <th style="text-align:left">Description</th>
+            <th style="text-align:left">Default value</th>
+            <th style="text-align:left">Example</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="text-align:left">hid</td>
+            <td style="text-align:left">Required</td>
+            <td style="text-align:left">The <em>hid</em> of the record.</td>
+            <td style="text-align:left"></td>
+            <td style="text-align:left">33BFF6QPI1YEFYISIWWDVQKGH8RW3Z</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">res_hid</td>
+            <td style="text-align:left">Optional</td>
+            <td style="text-align:left">Whether to return <code>hid</code> field when response</td>
+            <td style="text-align:left">false</td>
+            <td style="text-align:left">true</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">res_content</td>
+            <td style="text-align:left">Optional</td>
+            <td style="text-align:left">Whether to return <code>content</code> field when response</td>
+            <td style="text-align:left">false</td>
+            <td style="text-align:left">true</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">res_has_space</td>
+            <td style="text-align:left">Optional</td>
+            <td style="text-align:left">Whether to return <code>has_space</code> field when response</td>
+            <td style="text-align:left">false</td>
+            <td style="text-align:left">true</td>
+        </tr>
+        </tbody>
+    </table>
+    <p><strong>Method</strong> : <code>POST</code></p>
+    <p><strong>Data constraints</strong> :</p>
+    <p><strong>Example Request</strong>:</p>
+    <pre><code>POST <span class="hljs-string">http:</span><span class="hljs-comment">//127.0.0.1:5000/api/query  </span>
+Content-<span class="hljs-string">Type:</span>application/json
+<span class="hljs-string">Accept:</span>application/json
+
+{
+    <span class="hljs-string">'hid'</span>: <span class="hljs-number">32</span>L724R85L73LS3ARDP572E97TLPIX,
+    <span class="hljs-string">'res_hid'</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">'res_content'</span>: <span class="hljs-literal">true</span>
+}
+</code></pre>
+    <h4 id="success-responses">Success Responses</h4>
+    <p><strong>Condition</strong> : Exists a record with the given HID.</p>
+    <p><strong>Code</strong> : <code>200 OK</code></p>
+    <p><strong>Response Type</strong>: json</p>
+    <p><strong>Response Content Example</strong> :
+        Note: <code>result</code> only contains fields that are specified in the given parameters.</p>
+    <pre><code class="lang-json">{
+  <span class="hljs-attr">"result"</span>: {
+        <span class="hljs-attr">"hid"</span>: <span class="hljs-string">"33BFF6QPI1YEFYISIWWDVQKGH8RW3Z"</span>,
+        <span class="hljs-attr">"content"</span>: <span class="hljs-string">"Landmark Center, 8th Fl"</span>,
+        <span class="hljs-attr">"has_space"</span>: <span class="hljs-literal">false</span>
+  }
+}
+</code></pre>
+    <h4 id="failed-responses">Failed Responses</h4>
+    <p><strong>Condition</strong>: Fail to find a record with the given HID.</p>
+    <p><strong>Code</strong>: <code>404 Not Found</code></p>
+    <p><strong>Response Type</strong>: json
+        <strong>Response Content Example</strong> :</p>
+    <pre><code class="lang-json">{
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"[Err] 404 Not Found."</span>,
+  <span class="hljs-attr">"status"</span>: <span class="hljs-number">404</span>
+}
+</code></pre>
     <h2 id="getting-started">Getting Started</h2>
     <h3 id="prerequisites">Prerequisites</h3>
     <ul>
         <li>Install Virtualenv
             <pre><code class="lang-commandline">pip <span class="hljs-keyword">install</span> virtualenv
-    </code></pre>
+</code></pre>
         </li>
     </ul>
     <h3 id="installing">Installing</h3>
@@ -74,30 +172,30 @@
     <ul>
         <li>Create the virtual environment
             <pre><code class="lang-commandline"><span class="hljs-attribute">virtualenv</span> ./
-    </code></pre>
+</code></pre>
         </li>
         <li>Activate the virtual environment
             <pre><code class="lang-commandline"><span class="hljs-keyword">source</span> .<span class="hljs-regexp">/bin/</span>activate
-    </code></pre>
+</code></pre>
         </li>
         <li>install dependencies
             <pre><code class="lang-commandline">pip <span class="hljs-keyword">install</span> -r requirements.txt
-    </code></pre>
+</code></pre>
         </li>
     </ul>
     <h3 id="configuration">Configuration</h3>
     <ul>
         <li>Initialize the database
             <pre><code class="lang-commandline">python manage<span class="hljs-selector-class">.py</span> init
-    </code></pre>
+</code></pre>
         </li>
         <li>Migrate the database
             <pre><code class="lang-commandline">python manage<span class="hljs-selector-class">.py</span> migrate
-    </code></pre>
+</code></pre>
         </li>
         <li>Upgrade the database
             <pre><code class="lang-commandline">python manage<span class="hljs-selector-class">.py</span> upgrade
-    </code></pre>
+</code></pre>
         </li>
     </ul>
     <h3 id="start">Start</h3>
@@ -105,7 +203,7 @@
     <ul>
         <li>Start server
             <pre><code class="lang-commandline">python manage<span class="hljs-selector-class">.py</span> runserver
-    </code></pre>
+</code></pre>
         </li>
     </ul>
 
