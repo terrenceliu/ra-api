@@ -84,6 +84,8 @@ def query_by_hid(hid):
 	
 def main():
 	# Base.metadata.create_all(engine)
+	db.create_all()
+	db.session.commit()
 	# bash $ iconv -f iso-8859-1 -t utf-8 < ra_data_classifier.csv > ra_data_classifier_utf8.csv
 	add_catalog(load_csv("./ra_data_classifier_utf8.csv"))
 	db.session.commit()
