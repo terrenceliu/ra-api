@@ -15,6 +15,11 @@ from model import query_by_hid
 """
 	Routing
 """
+@ap.route('/')
+def index_page():
+	return render_template('index.html')
+
+
 @app.route('/api/query_by_hid/<hid>', methods=['GET', 'POST'])
 def query(hid):
 	if request.method == 'GET':
