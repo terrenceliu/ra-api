@@ -15,7 +15,7 @@ from model import query_by_hid
 """
 	Routing
 """
-@ap.route('/')
+@app.route('/', methods=['GET'])
 def index_page():
 	return render_template('index.html')
 
