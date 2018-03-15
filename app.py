@@ -1,9 +1,14 @@
-from flask import Flask
 from flask import Flask, request, render_template, jsonify, abort
-from model import session, Catalog
-import model
+from flask_sqlalchemy import SQLAlchemy
+# import model
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://zakcbnbwjltjov:c2a731b393554475ddb34e2ae1512c5017fd98420599dad51d762846b4ef53ed@ec2-54-221-212-15.compute-1.amazonaws.com:5432/d81coggjuv9qid'
+
+db = SQLAlchemy(app)
+
+from model import Catalog, query_by_hid
+
 
 """
 	Routing
@@ -11,7 +16,7 @@ app = Flask(__name__)
 @app.route('/api/query_by_hid/<hid>', methods=['GET', 'POST'])
 def query(hid):
 	if request.method == 'GET':
-		res = model.query_by_hid(hid)
+		res = query_by_hid(hid)
 		if res == None:
 			msg = '[Err] HID Not Found. HID = ' + hid + ', URL = ' + request.url
 			return not_found(msg)
