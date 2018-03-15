@@ -49,9 +49,7 @@ def load_csv(filename):
 			item["content"] = row[1]
 			item["has_space"] = False if (row[2] == "0") else True
 			res.append(item)
-	
 	return res
-	
 	
 def query_by_hid(hid):
 	"""
@@ -66,11 +64,10 @@ def query_by_hid(hid):
 	else:
 		return res.serialize()
 	
-		
 def start():
-	# Command to generate './ra_data_classifier_utf8.csv':
+	# Command to generate 'ra_data_classifier_utf8.csv':
 	#   bash $ iconv -f iso-8859-1 -t utf-8 < ra_data_classifier.csv > ra_data_classifier_utf8.csv
-	add_catalog(load_csv("./ra_data_classifier_utf8.csv"))
+	add_catalog(load_csv("./data/ra_data_classifier_utf8.csv"))
 	db.session.commit()
 
 
