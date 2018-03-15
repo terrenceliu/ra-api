@@ -1,22 +1,5 @@
-# from sqlalchemy import Integer, Column, create_engine, ForeignKey, String, Boolean
-# from sqlalchemy.orm import sessionmaker
-# from sqlalchemy.ext.declarative import declarative_base
 import csv
 from app import db
-
-"""
-	Base = declarative_base()
-	engine = create_engine('postgresql://localhost/test3')
-	# conn = engine.connect()
-	# conn.execution_options(isolation_level="AUTOCOMMIT")
-	# conn.execute('DROP DATABASE IF EXISTS test3;')
-	# conn.execute("CREATE DATABASE test3;")
-	# conn.execute("USE test3;")
-	
-	Session = sessionmaker()
-	Session.configure(bind = engine)
-	session = Session()
-"""
 
 """
 	Model
@@ -37,6 +20,7 @@ class Catalog(db.Model):
 			"content": self.content,
 			"has_space": self.has_space
 		}
+	
 		
 def add_catalog(data):
 	"""
@@ -47,8 +31,8 @@ def add_catalog(data):
 	"""
 	for item in data:
 		catalog = Catalog(hid = item["hid"], content = item["content"], has_space = item["has_space"])
-		# print catalog
 		db.session.add(catalog)
+	
 	
 def load_csv(filename):
 	"""
@@ -68,6 +52,7 @@ def load_csv(filename):
 	
 	return res
 	
+	
 def query_by_hid(hid):
 	"""
 	
@@ -80,14 +65,14 @@ def query_by_hid(hid):
 		return None
 	else:
 		return res.serialize()
-		
 	
-def main():
-	# Base.metadata.create_all(engine)
-	db.create_all()
-	db.session.commit()
-	# bash $ iconv -f iso-8859-1 -t utf-8 < ra_data_classifier.csv > ra_data_classifier_utf8.csv
+		
+def start():
+	# Command to generate './ra_data_classifier_utf8.csv':
+	#   bash $ iconv -f iso-8859-1 -t utf-8 < ra_data_classifier.csv > ra_data_classifier_utf8.csv
 	add_catalog(load_csv("./ra_data_classifier_utf8.csv"))
 	db.session.commit()
 
-main()
+
+if __name__ == '__main__':
+	start()

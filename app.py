@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
-# import model
 import os
 
 app = Flask(__name__)
@@ -11,8 +10,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
 db = SQLAlchemy(app)
 
-from model import Catalog, query_by_hid
-
+from model import query_by_hid
 
 """
 	Routing
@@ -36,7 +34,7 @@ def not_found(message):
 	resp = jsonify(message)
 	resp.status_code = 404
 	return resp
-
+	
 """
 	Main
 """
