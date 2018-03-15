@@ -4,8 +4,8 @@ import os
 
 app = Flask(__name__)
 
-# DATABASE_URL = os.environ['DATABASE_URL']
-DATABASE_URL = 'postgresql://localhost/test3'
+DATABASE_URL = os.environ['DATABASE_URL']
+# DATABASE_URL = 'postgresql://localhost/test3'
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
 db = SQLAlchemy(app)
