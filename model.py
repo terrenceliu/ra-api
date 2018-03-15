@@ -63,13 +63,25 @@ def query_by_hid(hid):
 		return None
 	else:
 		return res.serialize()
+
+def query_by_space(has_space):
+	"""
+	:param has_space:
+	:return: list(dict)
+	"""
+	query = db.session.query(Catalog)
+	res = query.filter(Catalog.has_space == has_space).all()
+	if res == None:
+		return None
+	else:
+		return [ele.serialize() for ele in res]
+
 	
 def start():
 	# Command to generate 'ra_data_classifier_utf8.csv':
 	#   bash $ iconv -f iso-8859-1 -t utf-8 < ra_data_classifier.csv > ra_data_classifier_utf8.csv
 	add_catalog(load_csv("./data/ra_data_classifier_utf8.csv"))
 	db.session.commit()
-
 
 if __name__ == '__main__':
 	start()
