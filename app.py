@@ -1,9 +1,12 @@
 from flask import Flask, request, render_template, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
 # import model
+import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://zakcbnbwjltjov:c2a731b393554475ddb34e2ae1512c5017fd98420599dad51d762846b4ef53ed@ec2-54-221-212-15.compute-1.amazonaws.com:5432/d81coggjuv9qid'
+
+DATABASE_URL = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
 db = SQLAlchemy(app)
 
