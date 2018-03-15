@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 DATABASE_URL = os.environ['DATABASE_URL']
-# 'postgres://zakcbnbwjltjov:c2a731b393554475ddb34e2ae1512c5017fd98420599dad51d762846b4ef53ed@ec2-54-221-212-15.compute-1.amazonaws.com:5432/d81coggjuv9qid'
+# DATABASE_URL = 'postgresql://localhost/test3'
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
 db = SQLAlchemy(app)
@@ -19,13 +19,14 @@ from model import query_by_hid
 def index_page():
 	return render_template('index.html')
 
-
-@app.route('/api/query_by_hid/<hid>', methods=['GET', 'POST'])
+@app.route('/api/query/hid/<hid>', methods=['GET'])
 def query(hid):
+	print request.get_json(silent=True)
+	print request.args
 	if request.method == 'GET':
 		res = query_by_hid(hid)
 		if res == None:
-			msg = '[Err] HID Not Found. HID = ' + hid + ', URL = ' + request.url
+			msg = '[Err] 404 Not Found. URL = ' + request.url
 			return not_found(msg)
 		else:
 			return jsonify({"result": res})
