@@ -1,30 +1,32 @@
-from sqlalchemy import Integer, Column, create_engine, ForeignKey, String, Boolean
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+# from sqlalchemy import Integer, Column, create_engine, ForeignKey, String, Boolean
+# from sqlalchemy.orm import sessionmaker
+# from sqlalchemy.ext.declarative import declarative_base
 import csv
+from app import db
 
-
-Base = declarative_base()
-engine = create_engine('postgresql://localhost/test3')
-# conn = engine.connect()
-# conn.execution_options(isolation_level="AUTOCOMMIT")
-# conn.execute('DROP DATABASE IF EXISTS test3;')
-# conn.execute("CREATE DATABASE test3;")
-# conn.execute("USE test3;")
-
-Session = sessionmaker()
-Session.configure(bind = engine)
-session = Session()
+"""
+	Base = declarative_base()
+	engine = create_engine('postgresql://localhost/test3')
+	# conn = engine.connect()
+	# conn.execution_options(isolation_level="AUTOCOMMIT")
+	# conn.execute('DROP DATABASE IF EXISTS test3;')
+	# conn.execute("CREATE DATABASE test3;")
+	# conn.execute("USE test3;")
+	
+	Session = sessionmaker()
+	Session.configure(bind = engine)
+	session = Session()
+"""
 
 """
 	Model
 """
-class Catalog(Base):
+class Catalog(db.Model):
 	__tablename__ = 'data'
-	id = Column(Integer, primary_key=True)
-	hid = Column(String)
-	content = Column(String)
-	has_space = Column(Boolean)
+	id = db.Column(db.Integer, primary_key=True)
+	hid = db.Column(db.String)
+	content = db.Column(db.String)
+	has_space = db.Column(db.Boolean)
 	
 	def __repr__(self):
 		return "<hid = '%s'> %s\n" % (self.hid, self.content)
@@ -46,7 +48,7 @@ def add_catalog(data):
 	for item in data:
 		catalog = Catalog(hid = item["hid"], content = item["content"], has_space = item["has_space"])
 		# print catalog
-		session.add(catalog)
+		db.session.add(catalog)
 	
 def load_csv(filename):
 	"""
@@ -72,7 +74,7 @@ def query_by_hid(hid):
 	:param hid:
 	:return: dict
 	"""
-	query = session.query(Catalog)
+	query = db.session.query(Catalog)
 	res = query.filter(Catalog.hid == hid).first()
 	if res == None:
 		return None
@@ -81,11 +83,9 @@ def query_by_hid(hid):
 		
 	
 def main():
-	Base.metadata.create_all(engine)
+	# Base.metadata.create_all(engine)
 	# bash $ iconv -f iso-8859-1 -t utf-8 < ra_data_classifier.csv > ra_data_classifier_utf8.csv
 	add_catalog(load_csv("./ra_data_classifier_utf8.csv"))
-	session.commit()
-
+	db.session.commit()
 
 main()
-	
