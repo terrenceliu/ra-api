@@ -5,6 +5,141 @@
     <title>RA-API</title>
 </head>
 <body>
-<h1>Hello, world.</h1>
+<div id="content">
+    <h1 id="raapi">RA-API</h1>
+
+<p>A simple API for data querying. <br />
+The project is deployed and hosted on Heroku.</p>
+
+<h2 id="usage">Usage</h2>
+
+<p>Main site: <code>https://ra-api.herokuapp.com/</code> <br />
+Query Full Record By HID <code>GET https://ra-api.herokuapp.com/api/query/hid/&lt;hid&gt;</code>  </p>
+
+<h2 id="apispecification">API Specification</h2>
+
+<h3 id="queryfullrecordbyhid">Query Full Record By HID</h3>
+
+<p>Returns the full record with the given “hid”</p>
+
+<p><strong>URL</strong> : <code>/api/query/hid/&lt;hid&gt;</code></p>
+
+<p><strong>URL Parameters</strong>:  </p>
+
+<p>| Name | Required | Description  | Example |
+|:-----|:--------- |:----------- |:--------|
+| hid  | Required | The <em>hid</em> of the record.|33BFF6QPI1YEFYISIWWDVQKGH8RW3Z|</p>
+
+<p><strong>Method</strong> : <code>GET</code></p>
+
+<p><strong>Data constraints</strong> : <code>hid</code> should be <code>string</code> type</p>
+
+<p><strong>Example Request</strong>:
+<code>GET http://127.0.0.1:5000/api/query/hid/33BFF6QPI1YEFYISIWWDVQKGH8RW3Z</code></p>
+
+<h4 id="successresponses">Success Responses</h4>
+
+<p><strong>Condition</strong> : Exists a record with the given HID.</p>
+
+<p><strong>Code</strong> : <code>200 OK</code></p>
+
+<p><strong>Response Type</strong>: json</p>
+
+<p><strong>Response Content Example</strong> :</p>
+
+<pre><code class="json language-json">{
+  "result": {
+        "hid": "33BFF6QPI1YEFYISIWWDVQKGH8RW3Z",
+        "content": "Landmark Center, 8th Fl",
+        "has_space": false
+  }
+}
+</code></pre>
+
+<h4 id="failedresponses">Failed Responses</h4>
+
+<p><strong>Condition</strong>: Fail to find a record with the given HID.</p>
+
+<p><strong>Code</strong>: <code>404 Not Found</code></p>
+
+<p><strong>Response Type</strong>: json
+<strong>Response Content Example</strong> :</p>
+
+<pre><code class="json language-json">{
+  "message": "[Err] 404 Not Found.",
+  "status": 404
+}
+</code></pre>
+
+<h2 id="gettingstarted">Getting Started</h2>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<ul>
+<li>Install Virtualenv </li>
+</ul>
+
+<pre><code class="commandline language-commandline">pip install virtualenv
+</code></pre>
+
+<h3 id="installing">Installing</h3>
+
+<p>Under the project directory</p>
+
+<ul>
+<li>Create the virtual environment</li>
+</ul>
+
+<pre><code class="commandline language-commandline">virtualenv ./
+</code></pre>
+
+<ul>
+<li>Activate the virtual environment</li>
+</ul>
+
+<pre><code class="commandline language-commandline">source ./bin/activate
+</code></pre>
+
+<ul>
+<li>install dependencies</li>
+</ul>
+
+<pre><code class="commandline language-commandline">pip install -r requirements.txt
+</code></pre>
+
+<h3 id="configuration">Configuration</h3>
+
+<ul>
+<li>Initialize the database</li>
+</ul>
+
+<pre><code class="commandline language-commandline">python manage.py init
+</code></pre>
+
+<ul>
+<li>Migrate the database</li>
+</ul>
+
+<pre><code class="commandline language-commandline">python manage.py migrate
+</code></pre>
+
+<ul>
+<li>Upgrade the database</li>
+</ul>
+
+<pre><code class="commandline language-commandline">python manage.py upgrade
+</code></pre>
+
+<h3 id="start">Start</h3>
+
+<p>Under the project directory</p>
+
+<ul>
+<li>Start server</li>
+</ul>
+
+<pre><code class="commandline language-commandline">python manage.py runserver
+</code></pre>
+</div>
 </body>
 </html>
